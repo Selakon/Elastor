@@ -5,7 +5,6 @@ const SPEED = 100
 const GRAVITY = 10
 const JUMP_POWER = -250
 const FLOOR = Vector2.UP
-const ROCK = preload("res://scenes/Rock.tscn")
 
 # Atributes
 export var velocity := Vector2.ZERO; 
@@ -35,9 +34,6 @@ func _physics_process(_delta):
 		else: 
 			$Animations.play("fall")
 			
-	# Shoot
-	if Input.is_action_just_pressed()
-	
 	velocity.y += GRAVITY
 		
 	velocity = move_and_slide(velocity, FLOOR)
