@@ -1,39 +1,33 @@
 extends KinematicBody2D
 
-# Constants 
-const SPEED = 100
-const GRAVITY = 10
-const JUMP_POWER = -250
-const FLOOR = Vector2.UP
+export var h_speed = 100
+export var max_h_speed = 300
+export var jump_speed = -100
+export var gravity = 100
 
-# Atributes
-export var velocity := Vector2.ZERO; 
+var velocity = Vector2(0,0)
+var movement_dir = 0 
 
 # Every frame 
-func _physics_process(_delta):
-	# Move 
-	if Input.is_action_pressed("ui_right"):
-		$Animations.play("walk")
-		$Animations.flip_h = false
-		velocity.x = SPEED
-	elif Input.is_action_pressed("ui_left"):
-		velocity.x = -SPEED
-		$Animations.play("walk")
-		$Animations.flip_h = true
-	else :
-		velocity.x = 0
-		if is_on_floor() : 
-			$Animations.play("idle")
-		
-	if Input.is_action_pressed("ui_up") and is_on_floor():
-		velocity.y = JUMP_POWER
+func _physics_process(delta):
+	var left = Input.is_action_pressed("ui_left")
+	var right = Input.is_action_pressed("ui_right")
+	var jump = Input.is_action_just_pressed("ui_up")
 	
+	# horizontal move
+	movement_dir = -int(left) + int(right)
+	if movement_dir != 0 :
+		var new_velocity = velocity.x + (h_speed * movement_dir * delta)
+		velocity.x = min(new_velocity, max_h_speed)
+	else:
+		velocity.x = 0
+	
+	
+	# vertical move (jump and gravity)
+	if jump and is_on_floor():
+		velocity.y += jump_speed
 	if !is_on_floor():
-		if velocity.y < 0 :
-			$Animations.play("jump")
-		else: 
-			$Animations.play("fall")
-			
-	velocity.y += GRAVITY
-		
-	velocity = move_and_slide(velocity, FLOOR)
+		velocity.y += gravity * delta
+	
+	# apply movement
+	velocity = move_and_slide(velocity, Vector2.UP)

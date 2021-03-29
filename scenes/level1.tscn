@@ -8,9 +8,6 @@ extents = Vector2( 15.9855, 16.2389 )
 
 [node name="level1" type="Node2D"]
 
-[node name="Player" parent="." instance=ExtResource( 1 )]
-position = Vector2( 110.026, 55.5399 )
-
 [node name="ground" type="Sprite" parent="."]
 position = Vector2( 16, 248 )
 texture = ExtResource( 2 )
@@ -226,3 +223,6 @@ __meta__ = {
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ground16/StaticBody2D"]
 shape = SubResource( 1 )
+
+[node name="Player" parent="." instance=ExtResource( 1 )]
+position = Vector2( 106, 127 )
